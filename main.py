@@ -73,7 +73,7 @@ if __name__ == "__main__":
    #Load and transform price data
     df_prices = transform_prices_to_DataFrame(prices="prices.csv", print_out=False)
     df_prices = df_prices[:"2024-12-31"]
-    df_prices.to_csv('df_prices.csv')
+    #df_prices.to_csv('df_prices.csv')
 
     ### Fetch and validate inputs ###  
     if len(sys.argv) < 2:
@@ -94,7 +94,7 @@ if __name__ == "__main__":
 
     try: 
         timeframe = dict_timeframes[input_timeframe]
-        print(f"Fetching return over {timeframe} days.")
+        #print(f"Fetching return over {timeframe} days.")
     except:
         raise ValueError(f"{input_timeframe} is not a valid timeframe. Valid timeframes include: {[k for k,v in dict_timeframes.items()]}")
 
