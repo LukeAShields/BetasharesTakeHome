@@ -2,7 +2,7 @@
 
 
 <h2> Betashares Take Home Assignment </h2>
-<p>This repo contains a simple script that calculates the return of an index, allowing for stock splits and ticker changes. It can be run from the command line by passing the relevant index and timeframe as arguments.Valid timeframes include:
+<p>This repo contains a simple script that calculates the return of an index, allowing for stock splits and ticker changes. It can be run from the command line by passing the relevant index and timeframe as arguments. Valid timeframes include:
 <ul>
     <li>1 day</li>
     <li>5 days</li>
