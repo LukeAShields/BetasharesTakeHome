@@ -73,11 +73,12 @@ if __name__ == "__main__":
    #Load and transform price data
     df_prices = transform_prices_to_DataFrame(prices="prices.csv", print_out=False)
     df_prices = df_prices[:"2024-12-31"]
-    #df_prices.to_csv('df_prices.csv')
 
     ### Fetch and validate inputs ###  
     if len(sys.argv) < 2:
         raise ValueError("You must include a ticker and timeframe as inputted arguments when running this program.")
+    elif len(sys.argv) > 3:
+        raise ValueError("You have provided too many arguments. You must include a ticker and timeframe as inputted arguments when running this program.")
     
     input_ticker = sys.argv[1]
     input_timeframe = sys.argv[2]
@@ -94,7 +95,6 @@ if __name__ == "__main__":
 
     try: 
         timeframe = dict_timeframes[input_timeframe]
-        #print(f"Fetching return over {timeframe} days.")
     except:
         raise ValueError(f"{input_timeframe} is not a valid timeframe. Valid timeframes include: {[k for k,v in dict_timeframes.items()]}")
 
@@ -107,16 +107,14 @@ if __name__ == "__main__":
     except:
         raise RuntimeError("Could not import 'ticker_changes.csv'.")    
     
-    
     #Import split data
     try:
         df_splits = pd.read_csv('splits.csv')
     except:
         raise RuntimeError("Could not import 'splits.csv'.")    
 
-
     ### Account for Ticker Changes ### 
-    #Elif statement links old ticker time series with new ticker time series so that entire series is returned irrespective of which is provided
+    #Elif statement allows script to return series that has undergone ticker change when either old or new ticker is provided
     #Ticker provided is ticker pre change
     if input_ticker in df_ticker_changes['old_ticker'].values:
         df_ticker_changes_filtered = df_ticker_changes[df_ticker_changes["old_ticker"] == input_ticker]
@@ -140,7 +138,6 @@ if __name__ == "__main__":
     
     
     ### Account for Stock Splits ### 
-    #Figure out whether inputted series is subject to a stock split
     tickers = list(set([old_ticker, new_ticker]))
     
     for t in tickers:
@@ -155,11 +152,10 @@ if __name__ == "__main__":
         else:
            pass                     # No Stock Split
 
-
     ### Compute Return ###
     df_series = df_series[beginning_date:]
     t1 = df_series.iloc[-1]
     t0 = df_series.iloc[0]
     r = round(((t1 / t0)-1) * 100, 2)
-    print(f"Return over {timeframe} days was {r}%.")
+    print(f"The return of {new_ticker} over {timeframe} days was {r}%.")
 
